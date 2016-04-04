@@ -319,8 +319,11 @@ ChessGame.prototype.click = function(e) {
         this.sel = null;
     } else if ((this.board[pos]&COLOR_MASK) == this.color) {
         this.sel = pos;
-        this.ws.send(JSON.stringify({cmd: "select", turn: this.turn, src: pos}));
+		var tosend = JSON.stringify({cmd: "select", turn: this.turn, src: pos});
+		console.log(tosend);
+        this.ws.send(tosend);
     } else if (this.sel != null && (this.turn % 2 == 1) == (this.color == WHITE)) {
+		console.log(this.sel +";" + pos);
         this.ws.send(JSON.stringify({cmd: "move", turn: this.turn, src: this.sel,
             dst: pos}));
         this.sel = null;
