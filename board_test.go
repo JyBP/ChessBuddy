@@ -49,6 +49,15 @@ func TestA2(t *testing.T) {
 	}
 }
 
+func TestTurnMoves(t *testing.T) {
+	b := NewBoard()
+	a7, _ := SqA("a7")
+	moves := b.Moves(a7)
+	if len(moves) > 0 {
+		t.FailNow()
+	}
+}
+
 func TestNoMove(t *testing.T) {
 	b := NewBoard()
 	a2, _ := SqA("a2")
