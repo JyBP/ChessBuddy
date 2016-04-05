@@ -7,6 +7,15 @@ import (
 	"github.com/benwebber/bitboard"
 )
 
+func TestAlg(t *testing.T) {
+	if !isAlgebraicValid("a1") || isAlgebraicValid("h8") {
+		t.FailNow()
+	}
+	if isAlgebraicValid("i1") || isAlgebraicValid("a9") || isAlgebraicValid("11") || isAlgebraicValid("aa") {
+		t.FailNow()
+	}
+}
+
 func TestA2(t *testing.T) {
 	a2 := "a2"
 	var chessbuddy int = int((a2[1]-'1')*8 + a2[0] - 'A')
@@ -16,33 +25,19 @@ func TestA2(t *testing.T) {
 
 	t.Log(chessbuddy, benwebber)
 	if chessbuddy == benwebber {
-		t.Fatal("Sq func doesn't take in algebraic notation")
+		t.FailNow()
 	}
 
-	//testing new Sq2 func
-	sq := Sq2(a2) //"a2
-	if sq.String() != a2 {
+	sq, err := SqA(a2) //"a2
+	if err != nil || sq.String() != a2 {
 		t.FailNow()
 	}
 
 	b := NewBoard()
-	moves := b.Moves(Sq2(a2))
+	moves := b.Moves(sq)
 	t.Log(moves)
 	if len(moves) < 1 {
 		t.Fatal("pawn has more than 1 move available")
-	}
-}
-
-func TestMove(t *testing.T) {
-	b := NewBoard()
-	src := b.String()
-	valid := b.Move(Sq2("h2"), Sq2("g3"))
-	if valid {
-		t.FailNow()
-	}
-	after := b.String()
-	if src != after {
-		t.FailNow()
 	}
 }
 

@@ -1,3 +1,5 @@
+// github.com/tux21b/ChessBuddy
+
 // Copyright (c) 2012 by Christoph Hack <christoph@tux21b.org>
 // All rights reserved. Distributed under the Simplified BSD License.
 
@@ -13,11 +15,10 @@ package chess
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"regexp"
 	"strings"
-
-	"github.com/benwebber/bitboard"
 )
 
 // The chess pieces are identified by a single letter from the standard
@@ -42,19 +43,26 @@ const (
 // A square represents a position on the chess board.
 type Square int
 
-// Sq parses a position on the chess board and returns that square. It will
-// panic if the input doesn't match the expression "[a-h][1-9]".
-func Sq(v string) Square {
-	if len(v) != 2 || v[0] < 'a' || v[0] > 'h' || v[1] < '1' || v[1] > '9' {
-		panic("invalid square")
-	}
-	return Square((v[1]-'1')*8 + v[0] - 'A')
+func isAlgebraicValid(v string) bool {
+	return !(len(v) != 2 || v[0] < 'a' || v[0] > 'h' || v[1] < '1' || v[1] > '9')
 }
 
-var chessboard = bitboard.NewChessBoard()
+// Sq parses a position on the chess board and returns that square. It will
+// returns error if the input doesn't match the expression "[a-h][1-9]".
+func Sq(v string) (Square, error) {
+	if !isAlgebraicValid(v) {
+		return 0, errors.New("invalid position")
+	}
+	return Square((v[1]-'1')*8 + v[0] - 'A'), nil
+}
 
-func Sq2(v string) Square {
-	return Square(chessboard.AlgebraicToBit(v))
+// Sq parses an algebraic position on the chess board and returns that square. It will
+// panic if the input doesn't match the expression "[a-h][1-9]".
+func SqA(v string) (Square, error) {
+	if !isAlgebraicValid(v) {
+		return 0, errors.New("invalid position")
+	}
+	return Square(AlgebraicToBit(v)), nil
 }
 
 // File returns the column number (ranging from 0 to 7) of the square.
