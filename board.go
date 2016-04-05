@@ -274,6 +274,10 @@ func (b *Board) MoveSAN(text string) error {
 // Move moves a piece from square src to the square dst. The return value
 // indicates whetever the move was sucessful or not.
 func (b *Board) Move(src, dst Square) bool {
+	if b.board[src]&ColorMask != b.color {
+		return false
+	}
+
 	if src < 0 || dst >= 64 || src < 0 || dst >= 64 {
 		return false
 	}
