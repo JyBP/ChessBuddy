@@ -566,13 +566,21 @@ func (b *Board) Check() bool {
 	return b.check && !b.stalemate
 }
 
+// Color returns the color of square
+func (b *Board) Color(src Square) (c uint8, hasPiece bool) {
+	if b.board[src] == 0 {
+		return 0, false
+	}
+	return b.board[src] & ColorMask, true
+}
+
 // Color returns the color of the current side to play.
-func (b *Board) Color() uint8 {
+func (b *Board) Turn() uint8 {
 	return b.color
 }
 
 // Turn returns the current halfturn number starting by one.
-func (b *Board) Turn() int {
+func (b *Board) Halfturn() int {
 	return len(b.hist) + 1
 }
 
