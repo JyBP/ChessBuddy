@@ -9,20 +9,40 @@ import (
 
 func TestA2(t *testing.T) {
 	a2 := "a2"
-	chessbuddy := (a2[1]-'1')*8 + a2[0] - 'A'
+	var chessbuddy int = int((a2[1]-'1')*8 + a2[0] - 'A')
 
 	chess := bitboard.NewChessBoard()
 	benwebber := chess.AlgebraicToBit(a2)
 
 	t.Log(chessbuddy, benwebber)
+	if chessbuddy == benwebber {
+		t.Fatal("Sq func doesn't take in algebraic notation")
+	}
 
-	sq := Sq2("a2") //"a2
-	t.Log(sq.String(), sq.File(), sq.Rank())
+	//testing new Sq2 func
+	sq := Sq2(a2) //"a2
+	if sq.String() != a2 {
+		t.FailNow()
+	}
+
 	b := NewBoard()
-	moves := b.Moves(Sq2("a2"))
+	moves := b.Moves(Sq2(a2))
 	t.Log(moves)
-	for m := range moves {
-		t.Log(m)
+	if len(moves) < 1 {
+		t.Fatal("pawn has more than 1 move available")
+	}
+}
+
+func TestMove(t *testing.T) {
+	b := NewBoard()
+	src := b.String()
+	valid := b.Move(Sq2("h2"), Sq2("g3"))
+	if valid {
+		t.FailNow()
+	}
+	after := b.String()
+	if src != after {
+		t.FailNow()
 	}
 }
 
