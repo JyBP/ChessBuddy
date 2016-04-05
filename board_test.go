@@ -7,13 +7,21 @@ import (
 	"github.com/benwebber/bitboard"
 )
 
+func testA(t *testing.T, str string, expected bool) {
+	if isAlgebraicValid(str) != expected {
+		t.Fatal(str, expected)
+	}
+}
 func TestAlg(t *testing.T) {
-	if !isAlgebraicValid("a1") || isAlgebraicValid("h8") {
-		t.FailNow()
-	}
-	if isAlgebraicValid("i1") || isAlgebraicValid("a9") || isAlgebraicValid("11") || isAlgebraicValid("aa") {
-		t.FailNow()
-	}
+	testA(t, "a1", true)
+	testA(t, "h8", true)
+	testA(t, "i1", false)
+	testA(t, " 1", false)
+	testA(t, "a9", false)
+	testA(t, "a0", false)
+	testA(t, "11", false)
+	testA(t, "aa", false)
+
 }
 
 func TestA2(t *testing.T) {
@@ -38,6 +46,36 @@ func TestA2(t *testing.T) {
 	t.Log(moves)
 	if len(moves) < 1 {
 		t.Fatal("pawn has more than 1 move available")
+	}
+}
+
+func TestNoMove(t *testing.T) {
+	b := NewBoard()
+	a2, _ := SqA("a2")
+	valid := b.Move(a2, a2)
+	if valid {
+		t.FailNow()
+	}
+}
+
+func TestTurn(t *testing.T) {
+	b := NewBoard()
+	a2, _ := SqA("a2")
+	a3, _ := SqA("a3")
+	a4, _ := SqA("a4")
+	one := b.Move(a2, a3)
+	two := b.Move(a3, a4)
+	if !one || two {
+		t.FailNow()
+	}
+}
+
+func TestTurnSan(t *testing.T) {
+	b := NewBoard()
+	one := b.MoveSAN("a3")
+	two := b.MoveSAN("a4")
+	if one != nil || two == nil {
+		t.FailNow()
 	}
 }
 

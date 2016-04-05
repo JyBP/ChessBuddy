@@ -44,7 +44,7 @@ const (
 type Square int
 
 func isAlgebraicValid(v string) bool {
-	return !(len(v) != 2 || v[0] < 'a' || v[0] > 'h' || v[1] < '1' || v[1] > '9')
+	return !(len(v) != 2 || v[0] < 'a' || v[0] > 'h' || v[1] < '1' || v[1] > '8')
 }
 
 // Sq parses a position on the chess board and returns that square. It will
