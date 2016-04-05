@@ -338,6 +338,10 @@ func (b *Board) Move(src, dst Square) bool {
 // Moves generates a list of all possible target squares for a specific piece
 // located at the square src.
 func (b *Board) Moves(src Square) (moves []Square) {
+	if b.board[src]&ColorMask != b.color {
+		return
+	}
+
 	for dst := Square(0); dst < 64; dst++ {
 		if b.canMove(src, dst) {
 			moves = append(moves, dst)
