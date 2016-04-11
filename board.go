@@ -579,6 +579,14 @@ func (b *Board) Turn() uint8 {
 	return b.color
 }
 
+func (b *Board) SwitchTurn() {
+	if b.color == White {
+		b.color = Black
+	} else {
+		b.color = White
+	}
+}
+
 // Turn returns the current halfturn number starting by one.
 func (b *Board) Halfturn() int {
 	return len(b.hist) + 1
